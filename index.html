@@ -1,0 +1,270 @@
+<html>
+<head>
+    <link rel="stylesheet" href="./css/lightbox.css">
+    <link rel="stylesheet" href="./css/styles_v1.css">
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<div id="main_body">
+
+
+
+<div id="body_content_side">
+
+
+<div class="box_container">
+    <div class="box_title_container">
+        <p class="box_title">PROJECT INFO</p>
+    </div>
+    <div class="box_content_container_outer">
+        <div class="box_content_container_inner">
+            <div class="box_content">
+                <div style="border-bottom:none;">
+                <p><b>Members:</b><br />
+                Zeming Li<br /></p>
+                <p><b>Supervisor:</b><br />
+                Prof. Kostas N. Plataniotis</p>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+
+
+ 
+<h1>Automated Face Analysis by Feature Tracking and Expression Recognition</h1>
+The face is an important information source for communication and interaction. This project aims to provide a robust facial feature tracking method based on active shape models and develop convolutional neural networks for a facial expression recognition task. The applications developed in this project achieve satisfactory performance.
+<p class="doc_date">Last Update: <a id="php"></a></p>
+
+<h3><strong>Sub-Project Links</strong></h3>
+ <ul>
+     <li>1. <a href="#one">Facial Feature Tracking Using Acitive Shape Models</a>
+         <ul>
+             <li>1.1 <a href="#1p1">An Active Shape Model (ASM) Trained on HELEN Dataset</a></li>
+             <li>1.2 <a href="#1p2">Reading Habit Monitor Using ASM</a></li>
+             <li>1.3 <a href="#1p3">Visual Distraction and Drowsiness Detection Using ASM</a></li>
+         </ul>
+     </li>
+     <li>
+         2. <a href="#two">Facial Expression Recognition Using Convolutional Neural Networks</a>
+         <ul>
+             <li>2.1 <a href="#2p1">The CNN Model Trained on CK+ Dataset</a></li>
+             <li>2.2 <a href="#2p2">A C++ GUI Application</a></li>
+         </ul>
+     </li>
+ </ul>
+ 
+ <div>
+     <h3>Avaliable Resources</h3>
+     <p><strong>Code</strong></p>
+     <ul>
+         <li><a href="#app1">Real-time 77 Facial Points Tracking</a></li>
+         <li><a href="#app2">Real-time 194 Facial Points Tracking</a></li>
+         <li><a href="#app3">Reading Habits Monitor</a></li>
+         <li><a href="#app4">Visual Distraction and Drowsiness Detection</a></li>
+         <li><a href="#app5">Convolutional Neural Network Training</a></li>
+         <li><a href="#app6">Facial Expression Recognition Using Convolutional Neural Networks</a></li>
+     </ul>
+     <p><strong>Training Dataset</strong></p>
+     <ul>
+         <li><a href="#dataset1">HELEN Dataset</a></li>
+         <li><a href="#dataset2">CK+ Dataset</a></li>
+     </ul>
+     <p><strong>Video Demos</strong></p>
+     <ul>
+         <li><a href="https://youtu.be/oV8cXyIca2Q" target="_blank">Real-time Closed Eyes and Head Pose Detection Using Newly Trained ASM</a></li>
+         <li><a href="https://youtu.be/p7XOMBNL2Jk" target="_blank">Reading Habits Monitor Using Active Shape Model</a></li>
+         <li><a href="https://youtu.be/zXntbSlqjds" target="_blank">Facial Expression Recognition Using Convolutional Neural Networks</a></li>
+     </ul>  
+ </div>
+<h2 id="one">1. Facial Feature Tracking Using Acitive Shape Models</h2>
+<p>
+     The main purpose of facial feature tracking is to localize the facial features and track the movements of all features. Facial feature localization as a part of preprocessing stages for face recognition has a crucial impact on the performance of the whole system.
+</p>
+    <p style="text-align:center;"><img src="./flowchart1.png" width="900"/><br />
+    <strong>Fig 1&#58; The process of facial feature localization and its applications.</strong>
+    </p>
+<p>
+    The location of facial features can be represented as landmarks on the face. The shape of a face can be represented as a vector of the coordinates of facial landmarks. Therefore, the shape model offers the geometric information of each landmark and the overall shape the object which is the face in this case. The Active Shape Model&#40;ASM&#41; start to search from the mean shape which is obtained from the training and the face is initially located by a face detector. It iterates to suggest a tentative shape by template matching the image texture around each facial landmark and conform the tentative shape to a global shape until convergence. Facial feature localization is a pivotal stage in many computer vision applications&#40;e.g.  human-computer interaction, facial animation, and face recognition&#41;.
+</p>
+
+
+<h3 id="1p1">1.1 An Active Shape Model (ASM) Trained on HELEN Dataset</h3>
+<p>
+    Helen dataset has 2330 diversiform high-resolution images obtained from the social media. Most images are cropped from the original versions with a face and a proportional amount of background. It offers a wide range of diverse appearance variations and conditions. Besides, automated methods were applied to enforce consistency and uniformity in the dataset, and each manually labeled face was reviewed to identify the errors of location landmarks on training images. Consequently, Helen dataset offers diversiform images with precise, detailed and consistent annotations, which is ideal for training an optimized active shape model.
+</p>
+<p style="text-align:center;"><img src="./helen-dataset.jpg" width="500"/><br />
+    <strong>Fig 2&#58; Some apperance diversity examples from Helen dataset</strong>
+</p>
+<div>
+    <ul>
+        <li>HELEN Dataset <a href="./resource/HELEN_Dataset_194model/HELEN-194model.zip" target="_blank" id="dataset1">&#91;194-landmark-model file&#93;</a></li>
+    </ul>
+</div> 
+<p>
+    There are two main reasons for training the optimized Stasm on Helen dataset. One is to improve the detection accuracy under different circumstances such as out-of-plane poses, illumination effects, and uncertain facial expressions. It has been proven that the drawback of the ASM would be revealed on rotated faces and face with complex illumination conditions. For another, the larger number of landmarks conveys more biometric information. Some high-level applications such as facial expression understanding, face spoofing detection or face matching require a larger number of landmarks as well as accurate spatial location. Therefore, the new model trained on Helen dataset could generate a new 194-landmark model, eliminating interference factors and offering more useful information.
+</p>
+<p>
+    The library used for training and executing ASM search is Stasm&#40;Stacked Trimmed ASM&#41; The annotation file is merged and edited by Shell commands. Some images are labeled by appearance conditions, so the landmarks involved are treated differently during training. The performance is measured by me17&#40;mean error on internal 17 facial landmarks&#41; on the BioID dataset.
+</p>
+<p style="text-align:center;"><img src="./ASM-performance.jpg" width="1000" /><br />
+    <strong>Fig 3&#58; The performance of the new ASM(blue) and the Stasm(black) measured by me17</strong>
+</p>
+<p style="text-align:center;"><img src="./asm-results.jpg" width="1000"/><br />
+    <strong>Fig 4&#58; The examples of the new model(right) is robust under various conditions(objects with glasses or with head poses)</strong>
+</p>
+<p>
+    <strong>Available Windows Applications</strong>
+</p>
+    <div>
+    Real-time facial feature tracking based on ASM
+    <ul>
+        <li id="app1">Real-time 77 Facial Points Tracking <a href="./resource/code/ASM.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/ASM-77.zip" target="_blank">&#91;executable file&#93;</a></li>
+        <li id="app2">Real-time 194 Facial Points Tracking <a href="./resource/code/ASM.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/ASM-194.zip" target="_blank">&#91;executable file&#93;</a></li>
+        <li>194 Facial Points Tracking Package <a href="./resource/code/194-landmark%20ASM.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/code/README-ASM.pdf">&#91;README file&#93;</a></li>
+    </ul>
+    </div>
+    
+<h3 id="1p2">1.2 Reading Habit Monitor Using ASM</h3>
+<p>
+    Gaze direction intuitively reflects the user’s behavior when the user is using the computer. At first, in the calibration process, the application moves the cursor to the four corners of the screen, guiding the user to stare at the four corners individually. Meanwhile, the landmarks on the pupils and around the eyes are recorded as reference values. The application runs as a reading habit monitor, which detects the facial features and estimate the gaze direction from frames captured by the webcam. 
+</p> 
+<p style="text-align:center;"><img src="./eyes-landmarks.jpg" width="800"/><br />
+    <strong>Fig 5&#58; The landmarks used for gaze direction estimation. Landmark &#91;38&#93;&#40;0&#41; to &#40;3&#41; and landmark &#91;39&#93;&#40;0&#41; to &#40;3&#41; are the pupils position when the user looks at the screen corners. Their relative distance to the geometric centre is obtained.</strong>
+</p> 
+<p>
+    The result of reading habit monitor is represented as a gaze density map. This map has the same size as the screenshot of the window the user read when the application is running. It is divided into 100 blocks and the grayscale of each block indicates the length of time the user spends on the corresponding area on the screen. The grayscale varies from pure black&#40;0&#41; to pure white&#40;255&#41; as the time accumulates. The gaze density map intuitively indicates the gaze movements on the screen, showing the user’s reading habits. 
+</p>
+ <p style="text-align:center;"><img src="./reading-monitor.jpg" width="1000"/><br />
+    <strong>Fig 6&#58; An example of using reading habits monitor to analyze the user's gaze movements when reading CBC news. The gaze density map shown on the right indicates the used spent longer time on the image and titles.</strong>
+</p>
+<p>
+    <strong>Available Windows Applications</strong>
+</p>
+<div>
+    <ul>
+        <li id="app3">Reading Habits Monitor <a href="./resource/code/Reading_Habits_Monitor.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/Reading%20Habits%20Monitor.zip" target="_blank">&#91;executable file&#93;</a></li>
+    </ul>
+</div>
+ 
+<h3 id="1p3">1.3 Visual Distracted and Drowsiness Detection Using ASM</h3>
+<p>
+    Facial feature localization can be used for facial movements and head pose detection. Particularly, visual distraction and drowsiness are related to facial feature movements, thus in this application, I use geometric information obtained by facial feature localization to estimate horizontal gaze angle and detect eyelid closure. As for facial feature localization in frames of a sequence, after ASM initially locates facial landmarks both ASM and Lukas and Kanade Optical Flow algorithm are alternately implemented on each frame.
+</p>
+<p>
+    Closed eyes can be determined by the geometric distance between the landmarks on the eye contour. PERCLOS &#40;the percentage of eyelid closure&#41; is the most reliable and valid determination of a drowsiness alertness. When the eyes are at least 80&#37; closed in a minute, drowsiness can be detected. In this application, the Euclidean distance between eyelids is calculated on each frame and a queue is used for PERCLOS data. Visual distraction can be determined by horizontal gaze angle. This angle is calculated by the outer corners of eyes, pupils, and geometric centers. 
+</p>
+
+<p>
+    <strong>Available Windows Applications</strong>
+</p>
+<div>
+    <ul>
+        <li id="app4">Visual Distraction and Drowsiness Detection <a href="./resource/code/Distracted-Drowsy-Driving-Dtection.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/Distraction-and-Drowsiness.zip" target="_blank">&#91;executable file&#93;</a></li>
+    </ul>
+</div>
+
+<h2 id="two">2. Facial Expression Recognition Using Convolutional Neural Networks</h2>
+<p>
+    Facial expressions convey rich emotional information in human communication and interpersonal relations. Automatic facial expression recognition is a challenging problem and has many applications in multiple disciplines. It has been proven that convolutional neural networks have advantages in object classification, especially for high-dimensional objects like faces. In this project, CNN models are trained on the Extended Cohn-Kanade &#40;CK&#43;&#41; Dataset to recognize 6 basic emotions and neutral faces.  We experimented different CNN architectures and methods such as dropout and batch normalization, ultimately achieving an accuracy of 0.844 on the test set and near real-time performance. 
+</p>
+<p>
+    A C++ GUI application and a demo application using the trained CNN model are created to recognize facial expression from face images captured by a camera. These applications use tiny-dnn and Qt5 libraries. The probabilities of 7 emotion classes are shown as the result of the recognition system. The application runs on Windows system, but the trained CNN model has potential to be implemented on multiplatform such as mobile devices and ARM architecture. 
+</p>
+<p style="text-align:center;"><img src="./cnn-system.png" width="850"/><br />
+    <strong>Fig 7&#58;The project overview.</strong>
+</p>
+ 
+<h3 id="2p1">2.1 The CNN Model Trained on CK+ Dataset</h3>
+<p>
+    <strong>The Extended Cohn-Kanade &#40;CK&#43;&#41; Dataset</strong>
+</p>
+<p>
+    The CK+ dataset, as a widely used dataset, was designed for promoting research into automatically recognizing action units and facial expressions. There are 593 sequences of images captured from videos across 123 subjects and 8 emotion labels in the dataset &#40;neutral &#43; 6 basic emotions &#43; contempt&#41;. But only 327 sequences are labeled with one of 7 emotions and 5.5% of sequences with emotion labels are contempt. It is obvious that contempt is not as universal as others. So contempt is ignored in the reclassification.
+</p>
+<p> 
+    There are two reasons for reclassification. 1. If only the first frame of the sequence is classified to neutral, and peak frame &#40;last frame in the sequence&#41; is classified to one of the six basic emotions as recommended by the authors, there are not adequate images for training CNNs. In other words, only 309 images are labeled as one of six emotions. 2. The images distribution among 7 emotions is not balanced. Therefore, some frames before the peak labeled frames are added to the corresponding classes. So that the classes with fewer images &#40;e. g. fear, sadness&#41; in the original dataset have more images, and experiments have proven this modification improves the performance of the trained CNN models. Besides, the ratio of the training, validation, test set is 6&#58;2&#58;2. 
+</p>
+<p style="text-align:center;"><img src="./ckp-dataset.png" width="600"/><br />
+    <strong>Fig 8&#58; The modified CK&#43; dataset used for training convolution neural networks.</strong>
+</p>
+
+<div>
+    <ul>
+        <li id="dataset2">Modified CK&#43; Dataset <a href="./resource/New_CK+Dataset/images.zip" target="_blank">&#91;cropped images&#93;</a> <a href="./resource/New_CK+Dataset/ubyte-images-labels.zip" target="_blank">&#91;idx3-ubyte file&#93;</a></li>
+    </ul>
+</div> 
+
+<p>
+    <strong>Convolutional Neural Network Training</strong>
+</p>
+<p>
+    Preprocessing
+</p>
+<p>
+    A region of interest is determined by the result of face detection by Cascade Classifier. Then the region is cropped to 48 by 48 pixels and converted to grayscale. The choice of cropped image size is based on the balance of accuracy and speed, as convolutions can be prohibitively expensive. The pixel data is zero-centered and normalized, so the range changes from &#91;0, 255&#93; to &#91;-1, 1&#93;. For another, the training images are converted to the idx3-ubyte format for convenient parsing.
+</p>
+<p>
+    Training and Evaluation
+</p>
+<p>
+    For the training process, all of the images in the training set are used with 30 epochs and a batch size of 32, and the hyper-parameters of the model are determined by validation experiments with different architectures, optimization algorithms, activation functions and the number of hidden neurons.
+</p> 
+    <ul>Some hyper-parameters obtained by validation for the CNN model
+        <li>Loss Function: cross-entropy</li>
+        <li>Hidden Neurons: 128, 256</li>
+        <li>Optimization Algorithm: adaptive gradient method (learning= 0.01, epsilon= 1e-8)</li>
+        <li>Batch-size: 32, epochs: 30</li>
+        <li>Activation Functions: Tanh, ReLU (Rectified Linear Unit), Softmax</li>
+    </ul>
+    
+<p style="text-align:center;"><img src="./cnn.png" width="1000"/><br />
+    <strong>Fig 9&#58; The architecture of the CNN model.</strong>
+</p> 
+<p style="text-align:center;"><img src="./confusion-map.png" width="500"/><br />
+    <strong>Fig 10&#58; The confusion map of the CNN model tested on the CK&#43; Dataset.</strong>
+</p>
+ 
+<p>
+    Demo
+</p>
+<p>
+    This demo is for CNNs constructing, training, evaluation and simple demonstration. Correspondingly, there are four modes that can be chosen by input parameters in command line. It can train or test a CNN model on a dataset, and use the model to recognize the facial expressions on frames from the webcam.
+</p>
+<div>
+    <ul>
+        <li id="app5">CNN Demo <a href="./resource/code/CNN-demo-code.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/cnn-demo.zip" target="_blank">&#91;executable file&#93;</a><a href="./resource/code/README-CNN-Training.pdf">&#91;README file&#93;</a></li>
+    </ul>
+</div>
+ 
+<h3 id="2p2">2.2 A C++ GUI Application</h3>
+<p>
+    A C++ GUI application is created based on the CNN model trained in the previous section and Qt5 library. After the model is loaded in the application, a webcam captures user’s images in real-time and the images are shown in the GUI. The probabilities of seven emotion classes are determined by the CNN model and shown below the image. The application is developed and tested on 64-bit Windows system, but it can be run on 32-bit Windows system without any changes and other mainstream platforms with some changes to source code.
+</p>
+
+<p style="text-align:center;"><img src="./Capture.PNG" width="600"/><br />
+    <strong>Fig 11&#58; The GUI of the application running on Windows 10.</strong>
+</p> 
+ 
+<div>
+    <ul>
+        <li id="app6">GUI Application <a href="./resource/code/CNN-GUI-code.zip" target="_blank">&#91;source code&#93;</a> <a href="./resource/exe-files/CNN-GUI.zip" target="_blank">&#91;executable file&#93;</a><a href="./resource/code/README-CNN.pdf">&#91;README file&#93;</a></li>
+    </ul>
+</div>
+  
+<h3>References</h3>
+<p>[1] Plataniotis, Konstantinos, and Anastasios N. Venetsanopoulos. Color image processing and applications. Springer Science &amp; Business Media, 2013.</p>
+<p>[2] Milborrow, Stephen, and Fred Nicolls. &quot;Active shape models with SIFT descriptors and MARS.&quot; In Computer Vision Theory and Applications &#40;VISAPP&#41;, 2014 International Conference on, vol. 2, pp. 380-387. IEEE, 2014.</p>
+<p>[3] Le, Vuong, Jonathan Brandt, Zhe Lin, Lubomir Bourdev, and Thomas Huang. "Interactive facial feature localization." Computer Vision–ECCV 2012 (2012): 679&#45;692.</p>
+<p>[4] Cootes, Timothy F., Christopher J. Taylor, David H. Cooper, and Jim Graham. &quot;Active shape models-their training and application.&quot; Computer vision and image understanding 61, no. 1 &#40;1995&#41;&#58; 38-59. </p>
+<p>[5] Tawari, Ashish, Kuo Hao Chen, and Mohan M. Trivedi. &quot;Where is the driver looking: Analysis of head, eye and iris for robust gaze zone estimation.&quot; In Intelligent Transportation Systems &#40;ITSC&#41;, 2014 IEEE 17th International Conference on, pp. 988&#45;994. IEEE, 2014.</p>
+<p>[6] Jesorsky, Oliver, Klaus J. Kirchberg, and Robert W. Frischholz. &quot;Robust face detection using the hausdorff distance.&quot; In International Conference on Audio-and Video-Based Biometric Person Authentication, pp. 90-95. Springer Berlin Heidelberg, 2001.</p>
+<p>[7] Krizhevsky, Alex, Ilya Sutskever, and Geoffrey E. Hinton. &quot;Imagenet classification with deep convolutional neural networks.&quot; In Advances in neural information processing systems, pp. 1097-1105. 2012.</p>
+<p>[8] Karpathy, Andrej, George Toderici, Sanketh Shetty, Thomas Leung, Rahul Sukthankar, and Li Fei&#45;Fei. &quot;Large-scale video classification with convolutional neural networks.&quot; In Proceedings of the IEEE conference on Computer Vision and Pattern Recognition, pp. 1725&#45;1732. 2014.</p>
+<p>[9] Lucey, Patrick, Jeffrey F. Cohn, Takeo Kanade, Jason Saragih, Zara Ambadar, and Iain Matthews. &quot;The extended cohn-kanade dataset &#40;ck&#43;&#41;&#58; A complete dataset for action unit and emotion-specified expression.&quot; In Computer Vision and Pattern Recognition Workshops &#40;CVPRW&#41;, 2010 IEEE Computer Society Conference on, pp. 94&#45;101. IEEE, 2010.</p>
+<p>[10] Bengio, Yoshua. &quot;Practical recommendations for gradient-based training of deep architectures.&quot; In Neural networks: Tricks of the trade, pp. 437&#45;478. Springer Berlin Heidelberg, 2012.</p>
+</div> <!-- id="body_content_side" -->
+</div> <!-- id="main_body" -->
+<a id="php"></a>
+</body>
+</html>
